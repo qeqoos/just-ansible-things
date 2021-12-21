@@ -1,0 +1,54 @@
+---
+- name: My test playbook for testing and practicing
+  hosts: "{{ hosts }}"
+  become: yes
+
+  vars:
+    src_folder: ./../basic/src
+    dest_folder: /usr/share/nginx/html
+
+  tasks:
+  - name: Get OS family and private ip
+    debug:
+      msg: "{{ ansible_os_family }} and {{ ansible_default_ipv4.address }}, also {{ cock_var }}"
+  
+  - shell: uptime
+    register: uptime
+
+  - debug:
+      msg: "Server has been running from{{ uptime.stdout }}"
+
+  - name: Install nginx 
+    package: name={{ item }} state=present
+    loop:
+      - nginx
+      - git
+    when: ansible_distribution != "Amazon"
+
+  - block:
+
+    - name: Check if nginx is installed / running
+      shell: systemctl list-units --type=service | grep nginx
+      ignore_errors: yes
+      register: check
+
+    - name: Install nginx on amazon-linux
+      shell: amazon-linux-extras install nginx1.12=latest -y && systemctl start nginx
+      when: check.rc != 0
+
+    - name: Enable nginx on amazon-linux
+      shell: systemctl enable nginx
+
+    when:  ansible_distribution == "Amazon"
+  
+  - name: Enable nginx
+    service: name=nginx state=started enabled=yes
+ 
+  - name: Generate index with vars substitution
+    template: src={{ src_folder }}/index.j2 dest={{ dest_folder }}/index.html mode=0555
+    notify: 
+      - Reload nginx
+
+  handlers:
+  - name: Reload nginx
+    service: name=nginx state=reloaded

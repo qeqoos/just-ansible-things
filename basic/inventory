@@ -1,0 +1,13 @@
+[DEV_SERVER]
+agent1 ansible_host=18.196.2.220
+
+[PROD_SERVER]
+agent2 ansible_host=18.195.83.21
+
+[TEST_SERVER]
+agent_ubuntu ansible_host=3.122.118.62
+
+[EC2SERVERS:children]
+PROD_SERVER
+DEV_SERVER
+TEST_SERVER

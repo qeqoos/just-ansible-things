@@ -1,0 +1,7 @@
+---
+- name: Create file1
+  copy: dest=/home/pavel/file1.txt content="This is file nUmBeR1"
+  delegate_to: localhost
+
+- name: Create file2
+  copy: dest="/home/{{ ansible_user }}/file2.txt" content="This is file nUmBeR2 OOLOLOLOLOLOLOLLOLOL"

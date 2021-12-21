@@ -1,0 +1,5 @@
+---
+ansible_user : ubuntu
+environment : "test"
+response : "yeah its only test, i agree"
+youtube_channel : "MATHIL" 

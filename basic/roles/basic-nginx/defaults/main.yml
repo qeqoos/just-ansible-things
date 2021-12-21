@@ -1,0 +1,7 @@
+---
+# defaults file for basic-nginx
+ansible_user : ec2-user
+ansible_ssh_private_key_file : /home/pavel/.ssh/ecs-instance-key
+environment : "unidentified"
+response : "dude, add group vars i beg u"
+youtube_channel : "ADV-ID" 

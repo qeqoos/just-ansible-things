@@ -1,0 +1,23 @@
+---
+- name: My test playbook for testing and practicing 2
+  hosts: {{ hosts }}
+  become: no
+  vars:
+    password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          63613564633136663836353630633866663366353630383861373265643330363234373738623762
+          6233306534626538613163656234353739663139613366340a396539613065653539326135393863
+          38656664656536663235653738663663666334663436373836373437396265636133356233663261
+          3763313132613131310a633639613632636435353534613532333935653964623738323732356361
+          3235
+
+  tasks:
+  - include: copy_tasks_to_import.yml
+    
+  - name: Check file2 
+    shell: cat "/home/{{ ansible_user }}/file2.txt"
+    register: result
+
+  - name: Print
+    debug: msg="THE CONTENT IS {{ result.stdout }} and my pass is {{ password }}"
+      

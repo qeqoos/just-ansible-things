@@ -1,0 +1,3 @@
+---
+# vars file for basic-nginx
+dest_folder: /usr/share/nginx/html
